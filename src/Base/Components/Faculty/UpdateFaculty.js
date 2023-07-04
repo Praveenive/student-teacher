@@ -37,12 +37,23 @@ function UpdateFaculty({teacher,setTeacher,editid,setEditid}) {
          setRole(editTeacher.Role)
     },[editTeacher])
   
-    function needupdate() {
-      const updateobj = {teacherName:values.teacherName,subject:values.subject,teacherGender:values.teachergender,Role:values.Role }
+    async function needupdate() {
+      const updateobj = {teacherName:values.teacherName,subject:values.subject,
+        teacherGender:values.teachergender,Role:values.Role }
+        const response =await fetch(`https://644f880bba9f39c6ab65caa9.mockapi.io/teacher/${editTeacher.id}`,{
+          method:"PUT",
+          body:JSON.stringify(updateobj),
+          headers:{
+            "Content-type":"application/json"
+          }
+        })
+        const data = await response.json()
+        if(data){
     setTeacher((x) => {
       const updated = [...x];
       updated[editid] = updateobj;
       return updated;})
+    }
       history.push("/teachers")
 }
     return (

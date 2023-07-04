@@ -1,7 +1,7 @@
 import { Button } from '@mui/material'
 import { TextField } from '@mui/material'
 import React, { useState } from 'react'
-import Base from '../Base'
+import Base from '../../Base'
 import { useHistory } from 'react-router-dom';
 import * as yup from 'yup'
 import { useFormik } from 'formik';
@@ -27,8 +27,16 @@ const { handleSubmit,values,handleChange,errors } = useFormik({
 })
 
   const history =useHistory( )
-  function createstudent(x) {
-    setStudent([...student, x]);
+ async function createstudent(x) {
+  const response = await fetch(`https://644f880bba9f39c6ab65caa9.mockapi.io/users`,{
+    method:"POST",
+    body:JSON.stringify(x),
+    headers:{
+      "Content-type":"application/json"
+    }
+  })
+  const data =await response.json()
+    setStudent([...student, data]);
     history.push("/students");
   }
   return (

@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
-import React, { useState } from 'react'
-import Base from '../Base'
+import React, { useEffect, useState } from 'react'
+import Base from '../../Base'
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
@@ -9,10 +9,27 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 function Teachers({teacher,setTeacher,setEditId}) {
     const history=useHistory()
-    function removeFaculty(teachId){
-   const remaingFacult= teacher.filter((teach,idx)=>idx!==teachId)
+    async function removeFaculty(teachId){
+      const response =await fetch(`https://644f880bba9f39c6ab65caa9.mockapi.io/teacher/${teachId}`,{
+        method:"DELETE"
+      })
+      const data =await response.json();
+      if(data){
+   const remaingFacult= teacher.filter((teach,idx)=>teach.id!==teachId)
    setTeacher(remaingFacult)
+      }
     }
+    useEffect(()=>{
+      const fetchFaculty = async()=>{
+      const response =await fetch(`https://644f880bba9f39c6ab65caa9.mockapi.io/teacher`,{
+        method:"GET"
+      })
+    
+      const data = await response.json();
+      setTeacher(data)
+    }
+    fetchFaculty()
+    })
   return (
    <Base
    title={"Welcome To B45 Faculty List" }

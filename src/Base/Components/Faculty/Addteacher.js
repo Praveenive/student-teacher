@@ -29,11 +29,21 @@ function Addteacher({ teacher, setTeacher }) {
     }
   });
 
-  function createFaculty(teacherData) {
+  async function createFaculty(teacherData) {
+    const response =await fetch(`https://644f880bba9f39c6ab65caa9.mockapi.io/teacher`,{
+      method:"POST",
+      body:JSON.stringify(teacherData),
+      headers:{
+        "Content-type":"application/json"
+      }
+
+    })
+    const data =await response.json();
+    if(data){
     setTeacher([...teacher, teacherData]);
     history.push("/teachers");
   }
-
+  }
   const { handleSubmit, values, handleChange, errors } = formik;
 
   return (

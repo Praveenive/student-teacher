@@ -1,6 +1,6 @@
 
-import React, { useState } from 'react'
-import Base from '../Base'
+import React, { useEffect, useState } from 'react'
+import Base from '../../Base'
 import { Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -10,10 +10,28 @@ import { useHistory } from 'react-router-dom';
 function Students({student,setStudent,editIdx,setEditIdx}) {
 
 const history = useHistory()
- function deleteStudent(studId) {
-    const remaingStudent = student.filter((stud, idx) => idx !== studId);
-    setStudent(remaingStudent);
+async function deleteStudent(studId) {
+    const response = await fetch(`https://644f880bba9f39c6ab65caa9.mockapi.io/users/${studId}`,{
+      method:"DELETE"
+    })
+    const data = await response.json()
+     if(data){
+       const remainingStudents = 
+       student.filter((stud, idx)=> stud.id !== studId)
+       setStudent(remainingStudents)
   }
+}
+  useEffect(()=>{
+    const fetchallStudents = async()=>{
+      const response = await fetch(`https://644f880bba9f39c6ab65caa9.mockapi.io/users`,{
+        method:"GET"
+      })
+   
+    const data = await response.json();
+    setStudent(data)
+  }
+    fetchallStudents()
+  },[])
   
   return (
     

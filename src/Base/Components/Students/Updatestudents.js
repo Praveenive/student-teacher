@@ -2,9 +2,10 @@ import { Button } from '@mui/material'
 import { TextField } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import Base from '../Base'
+import Base from '../../Base'
 import * as yup from 'yup'
 import { useFormik } from 'formik'
+import { useParams } from 'react-router-dom/cjs/react-router-dom.min'
 
 const filledValidationSchema = yup.object({
   name:yup.string().required("Kindly update the name"),
@@ -13,6 +14,7 @@ const filledValidationSchema = yup.object({
   qualification:yup.string().required("kindly update qualification")
 })
 function Updatestudents({student,setStudent,editIdx,setEditIdx}) {
+  const {id} =useParams()
   const { handleSubmit,values,handleChange,errors } = useFormik({
     initialValues:{
       name: "",batch:"",gender:"",qualification:""
@@ -36,16 +38,24 @@ function Updatestudents({student,setStudent,editIdx,setEditIdx}) {
        setBatch(editStudent.batch)
        setGender(editStudent.gender)
        setQualification(editStudent.qualification)
-       console.log(editStudent)
+       console.log("edit",editStudent)
   },[editStudent])
 
-  function needupdate() {
+  async function needupdate() {
     const updateobj = { name:values.name, batch:values.batch, qualification:values.qualification, gender:values.gender }
-    setStudent((x) => {
-      const updatedStudents = [...x];
-      updatedStudents[editIdx] = updateobj;
-      return updatedStudents;
-    })
+     const response =await fetch(`https://644f880bba9f39c6ab65caa9.mockapi.io/users/${editStudent.id}`,{
+      method:"PUT",
+      body:JSON.stringify(updateobj),
+      headers:{
+        "Content-type":"application/json"
+      }
+     })
+     const data= await response.json()
+     if(data){
+      console.log(updateobj)
+      student[id] = updateobj
+      setStudent([...student])
+     }
     history.push("/students")
   }
   

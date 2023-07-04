@@ -2,20 +2,18 @@
 import { useState } from 'react';
 import { Route, Switch } from 'react-router-dom/cjs/react-router-dom.min';
 import './App.css';
-import Addstudents from './Base/Components/Addstudents';
+import Addstudents from './Base/Components/Students/Addstudents'
 import Dashboard from './Base/Components/Dashboard';
-import data from './Base/Components/Data/data';
 import Errorpage from './Base/Components/Errorpage';
 import Addteacher from './Base/Components/Faculty/Addteacher';
-import teacherData from './Base/Components/Data/teacherData';
-import Students from './Base/Components/Students';
-import Teachers from './Base/Components/Teachers';
-import Updatestudents from './Base/Components/Updatestudents';
+import Students from './Base/Components/Students/Students';
+import Teachers from './Base/Components/Faculty/Teachers';
+import Updatestudents from './Base/Components/Students/Updatestudents';
 import UpdateFaculty from './Base/Components/Faculty/UpdateFaculty';
 
 function App() {
-  const [student,setStudent]=useState(data)
-  const[teacher,setTeacher]=useState(teacherData)
+  const [student,setStudent]=useState([])
+  const[teacher,setTeacher]=useState([])
   const [editIdx,setEditIdx]= useState();
   const [editid,setEditId] = useState()
   return (
